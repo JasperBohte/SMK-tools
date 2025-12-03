@@ -41,12 +41,12 @@
       border-radius: var(--radius-xl);
       border: 1px solid var(--border);
       box-shadow: 0 22px 60px rgba(15,23,42,0.9);
-      padding: 20px 22px 18px;
+      padding: 18px 20px 16px;
       position: relative;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
     .app-shell::before {
@@ -61,14 +61,16 @@
       z-index: 0;
     }
 
-    header {
+    /* Header-styling zoals bij de andere SMK tool */
+
+    header.app-header {
       position: relative;
       z-index: 1;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      padding-bottom: 10px;
+      padding-bottom: 8px;
       border-bottom: 1px dashed var(--border);
     }
 
@@ -78,9 +80,9 @@
       gap: 12px;
     }
 
-    .logo-circle {
-      width: 44px;
-      height: 44px;
+    .title-logo {
+      width: 40px;
+      height: 40px;
       border-radius: 16px;
       border: 1px solid rgba(56,189,248,0.8);
       background:
@@ -96,28 +98,80 @@
       box-shadow: 0 12px 30px rgba(15,23,42,0.9);
     }
 
+    .title-logo span {
+      font-size: 18px;
+    }
+
     .title-text h1 {
-      margin: 0;
-      font-size: 20px;
+      margin: 0 0 2px;
+      font-size: 19px;
       letter-spacing: 0.02em;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
     }
 
-    .title-text small {
-      display: block;
-      margin-top: 2px;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .header-pill {
+    .pill {
       font-size: 11px;
-      padding: 4px 10px;
+      padding: 2px 8px;
       border-radius: 999px;
       border: 1px solid var(--border);
       color: var(--text-soft);
       text-transform: uppercase;
       letter-spacing: 0.15em;
       background: radial-gradient(circle at 0 0, rgba(15,23,42,0.98), rgba(15,23,42,1));
+    }
+
+    .title-sub {
+      margin: 0;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .header-tools {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .back-link {
+      text-decoration: none;
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(56,189,248,0.8);
+      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.25), #020617);
+      color: #e0f2fe;
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .back-link:hover {
+      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.35), #020617);
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.7);
+    }
+
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px 4px 5px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.32), transparent 60%);
+      border: 1px solid rgba(56,189,248,0.6);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34,197,94,0.9);
     }
 
     main {
@@ -248,9 +302,18 @@
       .app-shell {
         padding: 14px 12px;
       }
-      header {
+      header.app-header {
         flex-direction: column;
         align-items: flex-start;
+      }
+      .header-tools {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .back-link {
+        flex: 1;
+        justify-content: center;
+        text-align: center;
       }
     }
   </style>
@@ -258,41 +321,29 @@
 <body>
   <div class="app-shell">
     <header class="app-header">
-  <div class="title-block">
-    <div class="title-logo">
-      <span>SMK</span>
-    </div>
-    <div class="title-text">
-      <h1>
-        Afboekingen &amp; Q&amp;A
-        <span class="pill">Puzzel · Servicedesk callflow</span>
-      </h1>
-      <p class="title-sub">
-        Kies eerst een onderwerp, daarna een subtype. Klik op een vraag om het voorbeeldantwoord te openen.
-      </p>
-    </div>
-  </div>
+      <div class="title-block">
+        <div class="title-logo">
+          <span>SMK</span>
+        </div>
+        <div class="title-text">
+          <h1>
+            Overlijden &amp; restitutie
+            <span class="pill">Hulptool · Berekening</span>
+          </h1>
+          <p class="title-sub">
+            Vul overlijdensdatum, vervaldatum en kaarttype in. De tool berekent automatisch het aantal resterende dagen en het restitutiebedrag.
+          </p>
+        </div>
+      </div>
 
-  <div class="header-tools">
-    <a href="index.html" style="
-      text-decoration:none;
-      font-size:11px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(56,189,248,0.8);
-      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.25), #020617);
-      color:#e0f2fe;
-      box-shadow:0 0 0 1px rgba(56,189,248,0.4);
-      ">
-      ← Terug naar SMK Tools
-    </a>
-
-    <div class="status-indicator">
-      <span class="status-dot"></span>
-      <span>Interactief · Klaar voor gebruik</span>
-    </div>
-  </div>
-</header>
+      <div class="header-tools">
+        <a href="index.html" class="back-link">← Terug naar SMK Tools</a>
+        <div class="status-indicator">
+          <span class="status-dot"></span>
+          <span>Interactief · Klaar voor gebruik</span>
+        </div>
+      </div>
+    </header>
 
     <main>
       <!-- Invoerblok -->
@@ -376,13 +427,14 @@
         <h2>Kopieerbare tekst</h2>
         <textarea id="kopieerTekst" readonly></textarea>
         <div class="muted" style="margin-top: 8px;">
-          De tekst hierboven kun je direct kopiëren naar je notitie of e-mail. Hierin staan automatisch: datum van overlijden, casenummer, restitutie (met eventueel bedrag) en of de overlijdensakte binnen is.
+          De tekst hierboven kun je direct kopiëren naar je notitie of e-mail. Hierin staan automatisch: datum van overlijden,
+          casenummer, restitutie (met eventueel bedrag), kaarttype, resterende dagen en of de overlijdensakte binnen is.
         </div>
       </section>
     </main>
 
     <footer>
-      <span>SMK – Overlijden & restitutie helper</span>
+      <span>SMK – Overlijden &amp; restitutie helper</span>
       <span>Versie 1.3</span>
     </footer>
   </div>
@@ -390,15 +442,20 @@
   <script>
     function formatDateDDMMYYYY(value) {
       if (!value) return "";
-      const [y, m, d] = value.split("-");
+      const parts = value.split("-");
+      if (parts.length !== 3) return "";
+      const [y, m, d] = parts;
       if (!y || !m || !d) return "";
       return `${d}-${m}-${y}`;
     }
 
     function parseDate(value) {
       if (!value) return null;
-      const [y, m, d] = value.split("-");
-      return new Date(Date.UTC(Number(y), Number(m) - 1, Number(d)));
+      const parts = value.split("-");
+      if (parts.length !== 3) return null;
+      const [y, m, d] = parts.map(Number);
+      if (!y || !m || !d) return null;
+      return new Date(Date.UTC(y, m - 1, d));
     }
 
     function formatEuro0(amount) {
@@ -421,8 +478,8 @@
       const restitutie = document.getElementById("restitutie").checked;
       const akte       = document.getElementById("akte").checked;
 
-      // aantal dagen tot vervaldatum
-      let dagenText = "NOG NIET BEKEND";
+      // Aantal dagen tot vervaldatum
+      let dagenText  = "NOG NIET BEKEND";
       let dagenValue = null;
 
       const dOverlijden = parseDate(overlijdensDatumStr);
@@ -438,11 +495,11 @@
 
       document.getElementById("aantalDagen").textContent = dagenText;
 
-      // totaal terug te betalen
-      let totaalText = "Missende data!";
+      // Totaal terug te betalen
+      let totaalText  = "Missende data!";
       let refundValue = null;
 
-      if (dagenText !== "NOG NIET BEKEND" && dagenValue != null) {
+      if (dagenValue != null) {
         let basis;
         if (jongeren) {
           basis = verlengde ? 36 : 39;
@@ -451,7 +508,7 @@
         }
 
         const proRata   = Math.max(0, (basis / 365) * dagenValue);
-        const maxRefund = verlengde ? 69 : 75;
+        const maxRefund = basis; // nooit meer dan het oorspronkelijke kaartbedrag
 
         refundValue = Math.min(maxRefund, proRata);
         totaalText  = formatEuro0(refundValue);
@@ -460,9 +517,64 @@
       document.getElementById("totaalTerug").textContent = totaalText;
 
       // Tekstvoorstel
-      const formattedDate = formatDateDDMMYYYY(overlijdensDatumStr);
+      const formattedOverlijden = formatDateDDMMYYYY(overlijdensDatumStr);
+      const formattedVerval     = formatDateDDMMYYYY(vervalDatumStr);
 
       let caseDigits = casenummerRaw.replace(/\D/g, "");
       if (caseDigits) {
-        caseDigits = caseDigits.padStart(8, "0").slice(-
+        caseDigits = caseDigits.padStart(8, "0").slice(-8);
+      }
 
+      // Kaarttype omschrijving
+      const kaartTypeParts = [];
+      kaartTypeParts.push(jongeren ? "Jongeren/kinderkaart" : "Volwassenenkaart");
+      kaartTypeParts.push(verlengde ? "Verlenging" : "Nieuwe kaart");
+      const kaartTypeTxt = kaartTypeParts.join(" · ");
+
+      // Restitutie omschrijving
+      let restitutieRegel;
+      if (!restitutie) {
+        restitutieRegel = "Restitutie: Niet van toepassing.";
+      } else if (refundValue == null) {
+        restitutieRegel = "Restitutie: Ja, maar bedrag nog niet bekend (ontbrekende data voor exacte berekening).";
+      } else {
+        restitutieRegel = "Restitutie: Ja, " + formatEuro0(refundValue) +
+          " (pro rata berekend op basis van resterende dagen t/m vervaldatum).";
+      }
+
+      const overlijdensAkteRegel =
+        "Overlijdensakte ontvangen: " + (akte ? "Ja" : "Nee");
+
+      const dagenRegel =
+        dagenValue != null
+          ? "Resterende dagen t/m vervaldatum: " + dagenValue + " dag(en)."
+          : "Resterende dagen t/m vervaldatum: nog niet bekend (ontbrekende datum).";
+
+      const regels = [];
+
+      regels.push("Overlijden & restitutie Museumkaart");
+      regels.push("");
+      regels.push("Casenummer: " + (caseDigits || "Nog niet ingevuld / onbekend"));
+      regels.push("Overlijdensdatum: " + (formattedOverlijden || "Nog niet bekend"));
+      regels.push("Vervaldatum Museumkaart: " + (formattedVerval || "Nog niet bekend"));
+      regels.push("");
+      regels.push("Kaarttype: " + kaartTypeTxt);
+      regels.push(dagenRegel);
+      regels.push(restitutieRegel);
+      regels.push(overlijdensAkteRegel);
+
+      document.getElementById("kopieerTekst").value = regels.join("\n");
+    }
+
+    // Events koppelen
+    window.addEventListener("DOMContentLoaded", () => {
+      const inputs = Array.from(document.querySelectorAll("input"));
+      inputs.forEach((el) => {
+        const evt = el.type === "checkbox" ? "change" : "input";
+        el.addEventListener(evt, recalc);
+      });
+      recalc();
+    });
+  </script>
+</body>
+</html>
