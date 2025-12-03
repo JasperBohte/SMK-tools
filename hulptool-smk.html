@@ -257,16 +257,42 @@
 </head>
 <body>
   <div class="app-shell">
-    <header>
-      <div class="title-block">
-        <div class="logo-circle">SMK</div>
-        <div class="title-text">
-          <h1>Hulptool SMK – Overlijdensberekening</h1>
-          <small>Bereken eenvoudig het resterende restitutiebedrag en genereer een nette notitie.</small>
-        </div>
-      </div>
-      <div class="header-pill">Servicetool · Intern gebruik</div>
-    </header>
+    <header class="app-header">
+  <div class="title-block">
+    <div class="title-logo">
+      <span>SMK</span>
+    </div>
+    <div class="title-text">
+      <h1>
+        Afboekingen &amp; Q&amp;A
+        <span class="pill">Puzzel · Servicedesk callflow</span>
+      </h1>
+      <p class="title-sub">
+        Kies eerst een onderwerp, daarna een subtype. Klik op een vraag om het voorbeeldantwoord te openen.
+      </p>
+    </div>
+  </div>
+
+  <div class="header-tools">
+    <a href="index.html" style="
+      text-decoration:none;
+      font-size:11px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(56,189,248,0.8);
+      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.25), #020617);
+      color:#e0f2fe;
+      box-shadow:0 0 0 1px rgba(56,189,248,0.4);
+      ">
+      ← Terug naar SMK Tools
+    </a>
+
+    <div class="status-indicator">
+      <span class="status-dot"></span>
+      <span>Interactief · Klaar voor gebruik</span>
+    </div>
+  </div>
+</header>
 
     <main>
       <!-- Invoerblok -->
@@ -439,3 +465,4 @@
       let caseDigits = casenummerRaw.replace(/\D/g, "");
       if (caseDigits) {
         caseDigits = caseDigits.padStart(8, "0").slice(-
+
