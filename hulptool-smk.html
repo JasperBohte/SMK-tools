@@ -2,179 +2,367 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8" />
-  <title>Hulptool SMK</title>
+  <title>Hulptool SMK – Overlijdensberekening</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body {
+    :root {
+      --bg: #020617;
+      --card-bg: #0f172a;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56,189,248,0.3);
+      --text-main: #e5e7eb;
+      --text-muted: #94a3b8;
+      --text-soft: #64748b;
+      --border: rgba(148,163,184,0.35);
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
-      background: #f5f5f5;
     }
-    h1 {
-      color: #004b8d;
-      margin-bottom: 0.25rem;
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: radial-gradient(circle at top, #1e293b 0, #020617 55%, #020617 100%);
+      color: var(--text-main);
     }
-    small {
-      color: #555;
+
+    .app-shell {
+      width: 100%;
+      max-width: 980px;
+      background: linear-gradient(145deg, rgba(15,23,42,0.97), rgba(15,23,42,0.99));
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      box-shadow: 0 22px 60px rgba(15,23,42,0.9);
+      padding: 20px 22px 18px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
+
+    .app-shell::before {
+      content: "";
+      position: absolute;
+      inset: -120px;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 0% -10%, rgba(56,189,248,0.18) 0, transparent 55%),
+        radial-gradient(circle at 120% 0%, rgba(129,140,248,0.2) 0, transparent 45%);
+      opacity: 0.7;
+      z-index: 0;
+    }
+
+    header {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .title-block {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      border: 1px solid rgba(56,189,248,0.8);
+      background:
+        radial-gradient(circle at 0 0, rgba(56,189,248,0.7), transparent 55%),
+        radial-gradient(circle at 110% 120%, rgba(94,234,212,0.6), transparent 55%),
+        #020617;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #e0f2fe;
+      box-shadow: 0 12px 30px rgba(15,23,42,0.9);
+    }
+
+    .title-text h1 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: 0.02em;
+    }
+
+    .title-text small {
+      display: block;
+      margin-top: 2px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .header-pill {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      background: radial-gradient(circle at 0 0, rgba(15,23,42,0.98), rgba(15,23,42,1));
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
     .card {
-      background: #ffffff;
-      border-radius: 8px;
-      padding: 16px 20px;
-      margin-top: 16px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+      background: radial-gradient(circle at 0 0, rgba(15,23,42,0.98), #020617);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 14px 16px 14px;
+      box-shadow: 0 16px 34px rgba(15,23,42,0.9);
     }
+
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      letter-spacing: 0.03em;
+    }
+
+    .muted {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 12px 24px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px 18px;
+      margin-top: 4px;
     }
+
     label {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       display: block;
       margin-bottom: 4px;
     }
+
     input[type="date"],
     input[type="number"],
     input[type="text"],
     textarea {
       width: 100%;
-      box-sizing: border-box;
       padding: 8px 10px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      font-size: 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(148,163,184,0.5);
+      font-size: 13px;
+      background: radial-gradient(circle at 0 0, rgba(15,23,42,0.96), #020617);
+      color: var(--text-main);
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
     }
+
+    input::placeholder {
+      color: var(--text-soft);
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: rgba(56,189,248,0.9);
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.6);
+      background: radial-gradient(circle at 0 0, rgba(15,23,42,1), #020617);
+    }
+
     textarea {
-      min-height: 160px;
+      min-height: 150px;
       resize: vertical;
       white-space: pre-wrap;
     }
+
     .checkbox-group {
       display: flex;
       flex-direction: column;
       gap: 4px;
       margin-top: 4px;
     }
+
     .checkbox-row {
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-weight: 500;
+      gap: 7px;
+      font-size: 13px;
+      color: var(--text-main);
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      accent-color: #38bdf8;
+    }
+
+    .output-row {
+      margin-top: 6px;
       font-size: 14px;
     }
-    .output-row {
-      margin-top: 8px;
-      font-size: 15px;
-    }
+
     .output-label {
       font-weight: 600;
+      color: var(--text-main);
     }
+
     .output-value {
-      font-family: "Consolas", "SF Mono", ui-monospace, monospace;
-      padding-left: 4px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      padding-left: 6px;
+      color: #e0f2fe;
     }
-    .muted {
-      font-size: 12px;
-      color: #777;
+
+    footer {
+      position: relative;
+      z-index: 1;
+      margin-top: 2px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border);
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    @media (max-width: 720px) {
+      .app-shell {
+        padding: 14px 12px;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Hulptool SMK</h1>
-  <small>HTML-versie van tabblad “Berekening Dagen” – alles rekent automatisch mee.</small>
-
-  <!-- Invoerblok -->
-  <div class="card">
-    <h2>Invoer</h2>
-    <div class="grid">
-      <div>
-        <label for="overlijdensdatum">Overlijdensdatum</label>
-        <input type="date" id="overlijdensdatum" />
-        <div class="muted">Laat leeg als de datum nog niet bekend is.</div>
-      </div>
-      <div>
-        <label for="vervaldatum">Vervaldatum Museumkaart</label>
-        <input type="date" id="vervaldatum" />
-      </div>
-      <div>
-        <label for="casenummer">Casenummer</label>
-        <input type="text" id="casenummer" inputmode="numeric" placeholder="bijv. 2352414" />
-        <div class="muted">Wordt automatisch naar 8 cijfers geformatteerd (00000000).</div>
-      </div>
-    </div>
-
-    <div class="grid" style="margin-top: 16px;">
-      <div>
-        <label>Kaarttype</label>
-        <div class="checkbox-group">
-          <label class="checkbox-row">
-            <input type="checkbox" id="verlengde" />
-            <span>Verlengde kaart?</span>
-          </label>
-          <label class="checkbox-row">
-            <input type="checkbox" id="jongeren" />
-            <span>Jongeren/kinder kaart?</span>
-          </label>
-        </div>
-        <div class="muted">
-          Logica zoals in Excel:<br>
-          • Volwassene: €75 (normaal) / €69 (verlengd)<br>
-          • Jongeren/kind: €39 (normaal) / €36 (verlengd)
+  <div class="app-shell">
+    <header>
+      <div class="title-block">
+        <div class="logo-circle">SMK</div>
+        <div class="title-text">
+          <h1>Hulptool SMK – Overlijdensberekening</h1>
+          <small>HTML-versie van tabblad “Berekening Dagen” – alles rekent automatisch mee.</small>
         </div>
       </div>
+      <div class="header-pill">Servicetool · Intern gebruik</div>
+    </header>
 
-      <div>
-        <label>Overige opties</label>
-        <div class="checkbox-group">
-          <label class="checkbox-row">
-            <input type="checkbox" id="restitutie" />
-            <span>Restitutie?</span>
-          </label>
-          <label class="checkbox-row">
-            <input type="checkbox" id="akte" />
-            <span>Overlijdensakte binnen?</span>
-          </label>
+    <main>
+      <!-- Invoerblok -->
+      <section class="card">
+        <h2>Invoer</h2>
+        <div class="grid">
+          <div>
+            <label for="overlijdensdatum">Overlijdensdatum</label>
+            <input type="date" id="overlijdensdatum" />
+            <div class="muted">Laat leeg als de datum nog niet bekend is.</div>
+          </div>
+          <div>
+            <label for="vervaldatum">Vervaldatum Museumkaart</label>
+            <input type="date" id="vervaldatum" />
+          </div>
+          <div>
+            <label for="casenummer">Casenummer</label>
+            <input type="text" id="casenummer" inputmode="numeric" placeholder="bijv. 2352414" />
+            <div class="muted">Wordt automatisch naar 8 cijfers geformatteerd (00000000).</div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Resultatenblok -->
-  <div class="card">
-    <h2>Resultaat berekening</h2>
-    <div class="output-row">
-      <span class="output-label">Aantal dagen tot vervaldatum:</span>
-      <span class="output-value" id="aantalDagen">NOG NIET BEKEND</span>
-    </div>
-    <div class="output-row">
-      <span class="output-label">Totaal terug te betalen:</span>
-      <span class="output-value" id="totaalTerug">Missende data!</span>
-    </div>
-    <div class="muted" style="margin-top: 6px;">
-      Formule zoals in cel I2 en D7 van je sheet:<br>
-      I2: IF(A2="?", "NOG NIET BEKEND", MAX(0, E2 - A2))<br>
-      D7: IF(I2="NOG NIET BEKEND","Missende data!", MIN(IF(D4,69,75), MAX(0, IF(D5, IF(D4,36,39), IF(D4,69,75)) / 365 * I2)))
-    </div>
-  </div>
+        <div class="grid" style="margin-top: 14px;">
+          <div>
+            <label>Kaarttype</label>
+            <div class="checkbox-group">
+              <label class="checkbox-row">
+                <input type="checkbox" id="verlengde" />
+                <span>Verlengde kaart?</span>
+              </label>
+              <label class="checkbox-row">
+                <input type="checkbox" id="jongeren" />
+                <span>Jongeren/kinder kaart?</span>
+              </label>
+            </div>
+            <div class="muted" style="margin-top: 4px;">
+              Logica zoals in Excel:<br />
+              • Volwassene: €75 (normaal) / €69 (verlengd)<br />
+              • Jongeren/kind: €39 (normaal) / €36 (verlengd)
+            </div>
+          </div>
 
-  <!-- Kopieerbare tekst -->
-  <div class="card">
-    <h2>Kopieerbare tekst</h2>
-    <textarea id="kopieerTekst" readonly></textarea>
-    <div class="muted" style="margin-top: 6px;">
-      Opbouw zoals in cel B16:<br>
-      "Kaarthouder overleden" + datum, casenummer, restitutie (met bedrag) en status overlijdensakte.
-    </div>
+          <div>
+            <label>Overige opties</label>
+            <div class="checkbox-group">
+              <label class="checkbox-row">
+                <input type="checkbox" id="restitutie" />
+                <span>Restitutie?</span>
+              </label>
+              <label class="checkbox-row">
+                <input type="checkbox" id="akte" />
+                <span>Overlijdensakte binnen?</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Resultatenblok -->
+      <section class="card">
+        <h2>Resultaat berekening</h2>
+        <div class="output-row">
+          <span class="output-label">Aantal dagen tot vervaldatum:</span>
+          <span class="output-value" id="aantalDagen">NOG NIET BEKEND</span>
+        </div>
+        <div class="output-row">
+          <span class="output-label">Totaal terug te betalen:</span>
+          <span class="output-value" id="totaalTerug">Missende data!</span>
+        </div>
+        <div class="muted" style="margin-top: 8px;">
+          Formule zoals in cel I2 en D7 van je sheet:<br />
+          I2: IF(A2="?", "NOG NIET BEKEND", MAX(0, E2 - A2))<br />
+          D7: IF(I2="NOG NIET BEKEND","Missende data!", MIN(IF(D4,69,75), MAX(0, IF(D5, IF(D4,36,39), IF(D4,69,75)) / 365 * I2)))
+        </div>
+      </section>
+
+      <!-- Kopieerbare tekst -->
+      <section class="card">
+        <h2>Kopieerbare tekst</h2>
+        <textarea id="kopieerTekst" readonly></textarea>
+        <div class="muted" style="margin-top: 8px;">
+          Opbouw zoals in cel B16:<br />
+          "Kaarthouder overleden" + datum, casenummer, restitutie (met bedrag) en status overlijdensakte.
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>SMK – Overlijden & restitutie helper</span>
+      <span>Versie 1.0 · HTML-tool</span>
+    </footer>
   </div>
 
   <script>
     function formatDateDDMMYYYY(value) {
       if (!value) return "";
-      // value is "YYYY-MM-DD" uit &lt;input type="date"&gt;
       const [y, m, d] = value.split("-");
       if (!y || !m || !d) return "";
       return `${d}-${m}-${y}`;
@@ -182,7 +370,6 @@
 
     function parseDate(value) {
       if (!value) return null;
-      // zet om naar "zuivere" datum in lokale tijd, maar werk via UTC om zomertijd-issues te vermijden
       const [y, m, d] = value.split("-");
       return new Date(Date.UTC(Number(y), Number(m) - 1, Number(d)));
     }
@@ -202,12 +389,12 @@
       const vervalDatumStr      = document.getElementById("vervaldatum").value;
       const casenummerRaw       = document.getElementById("casenummer").value.trim();
 
-      const verlengde = document.getElementById("verlengde").checked;   // D4 in Excel
-      const jongeren  = document.getElementById("jongeren").checked;    // D5
-      const restitutie = document.getElementById("restitutie").checked; // F12
-      const akte       = document.getElementById("akte").checked;       // F13
+      const verlengde  = document.getElementById("verlengde").checked;
+      const jongeren   = document.getElementById("jongeren").checked;
+      const restitutie = document.getElementById("restitutie").checked;
+      const akte       = document.getElementById("akte").checked;
 
-      // --- I2: Aantal dagen tot vervaldatum ---
+      // I2: aantal dagen tot vervaldatum
       let dagenText = "NOG NIET BEKEND";
       let dagenValue = null;
 
@@ -215,25 +402,20 @@
       const dVerval     = parseDate(vervalDatumStr);
 
       if (dOverlijden && dVerval) {
-        let diffMs = dVerval.getTime() - dOverlijden.getTime();
-        let diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24)); // afronden naar gehele dagen
+        let diffMs   = dVerval.getTime() - dOverlijden.getTime();
+        let diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
         if (diffDays < 0) diffDays = 0;
         dagenValue = diffDays;
-        dagenText = String(diffDays);
-      } else {
-        // komt overeen met "A2=?" of ontbrekende data -> "NOG NIET BEKEND"
-        dagenText = "NOG NIET BEKEND";
+        dagenText  = String(diffDays);
       }
 
       document.getElementById("aantalDagen").textContent = dagenText;
 
-      // --- D7: Totaal terug te betalen ---
+      // D7: totaal terug te betalen
       let totaalText = "Missende data!";
       let refundValue = null;
 
       if (dagenText !== "NOG NIET BEKEND" && dagenValue != null) {
-        // Basisbedrag volgens jongere/volwassene + verlengd/normaal
-        // IF(D5, IF(D4,36,39), IF(D4,69,75))
         let basis;
         if (jongeren) {
           basis = verlengde ? 36 : 39;
@@ -241,41 +423,34 @@
           basis = verlengde ? 69 : 75;
         }
 
-        // pro rata: MAX(0, basis / 365 * I2)
-        let proRata = Math.max(0, (basis / 365) * dagenValue);
-
-        // bovengrens: IF(D4,69,75)
+        const proRata   = Math.max(0, (basis / 365) * dagenValue);
         const maxRefund = verlengde ? 69 : 75;
 
         refundValue = Math.min(maxRefund, proRata);
-        totaalText = formatEuro0(refundValue);
-      } else {
-        totaalText = "Missende data!";
+        totaalText  = formatEuro0(refundValue);
       }
 
       document.getElementById("totaalTerug").textContent = totaalText;
 
-      // --- Tekstvoorstel B16 ---
+      // Tekstvoorstel B16
       const formattedDate = formatDateDDMMYYYY(overlijdensDatumStr);
 
-      // casenummer als 8 cijfers (TEXT(C13, "00000000"))
       let caseDigits = casenummerRaw.replace(/\D/g, "");
       if (caseDigits) {
         caseDigits = caseDigits.padStart(8, "0").slice(-8);
       }
 
-      // Restitutie-regel: "Restitutie: Ja (€…)" of "Nee"
       let restitutieLine;
       if (restitutie) {
-        const bedragTekst = refundValue != null && !isNaN(refundValue)
-          ? ` (${formatEuro0(refundValue)})`
-          : "";
+        const bedragTekst =
+          refundValue != null && !isNaN(refundValue)
+            ? ` (${formatEuro0(refundValue)})`
+            : "";
         restitutieLine = `Restitutie: Ja${bedragTekst}`;
       } else {
         restitutieLine = "Restitutie: Nee";
       }
 
-      // Overlijdensakte-regel
       const akteLine = `Overlijdensakte binnen: ${akte ? "Ja" : "Nee"}`;
 
       const regels = [
@@ -286,29 +461,4 @@
         akteLine
       ];
 
-      document.getElementById("kopieerTekst").value = regels.join("\n");
-    }
-
-    // Alles koppelen aan input events
-    const inputs = [
-      "overlijdensdatum",
-      "vervaldatum",
-      "casenummer",
-      "verlengde",
-      "jongeren",
-      "restitutie",
-      "akte"
-    ];
-
-    inputs.forEach(id => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.addEventListener("input", recalc);
-      el.addEventListener("change", recalc);
-    });
-
-    // Eerste berekening bij laden
-    recalc();
-  </script>
-</body>
-</html>
+      document.getElementById("kopi
