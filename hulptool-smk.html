@@ -245,6 +245,42 @@
       white-space: pre-wrap;
     }
 
+    /* Datumveld met zichtbaar kalender-knopje */
+    .date-field {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .date-field .date-input {
+      flex: 1;
+    }
+
+    .date-button {
+      flex-shrink: 0;
+      border-radius: 999px;
+      border: 1px solid rgba(56,189,248,0.8);
+      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.25), #020617);
+      padding: 6px 10px;
+      font-size: 14px;
+      cursor: pointer;
+      color: #e0f2fe;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.35);
+    }
+
+    .date-button:hover {
+      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.38), #020617);
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.8);
+    }
+
+    .date-button:active {
+      transform: translateY(1px);
+      box-shadow: 0 0 0 1px rgba(56,189,248,1);
+    }
+
     .checkbox-group {
       display: flex;
       flex-direction: column;
@@ -380,12 +416,34 @@
         <div class="grid">
           <div>
             <label for="overlijdensdatum">Overlijdensdatum</label>
-            <input type="date" id="overlijdensdatum" />
+            <div class="date-field">
+              <input type="date" id="overlijdensdatum" class="date-input" />
+              <button
+                type="button"
+                class="date-button"
+                data-target="overlijdensdatum"
+                aria-label="Datum kiezen"
+                title="Datum kiezen"
+              >
+                📅
+              </button>
+            </div>
             <div class="muted">Laat leeg als de datum nog niet bekend is.</div>
           </div>
           <div>
             <label for="vervaldatum">Vervaldatum Museumkaart</label>
-            <input type="date" id="vervaldatum" />
+            <div class="date-field">
+              <input type="date" id="vervaldatum" class="date-input" />
+              <button
+                type="button"
+                class="date-button"
+                data-target="vervaldatum"
+                aria-label="Datum kiezen"
+                title="Datum kiezen"
+              >
+                📅
+              </button>
+            </div>
           </div>
           <div>
             <label for="casenummer">Casenummer</label>
@@ -630,6 +688,26 @@
       });
     }
 
+    function setupDateButtons() {
+      const buttons = document.querySelectorAll(".date-button");
+      buttons.forEach((btn) => {
+        const targetId = btn.getAttribute("data-target");
+        const input = document.getElementById(targetId);
+        if (!input) return;
+
+        btn.addEventListener("click", () => {
+          // Probeer showPicker (nieuwere browsers)
+          if (typeof input.showPicker === "function") {
+            input.showPicker();
+          } else {
+            // Fallback: focus + click opent vaak ook de picker
+            input.focus();
+            input.click();
+          }
+        });
+      });
+    }
+
     // Events koppelen
     window.addEventListener("DOMContentLoaded", () => {
       const inputs = Array.from(document.querySelectorAll("input"));
@@ -638,6 +716,7 @@
         el.addEventListener(evt, recalc);
       });
       setupCopyButton();
+      setupDateButtons();
       recalc();
     });
   </script>
