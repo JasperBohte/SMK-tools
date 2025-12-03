@@ -61,8 +61,6 @@
       z-index: 0;
     }
 
-    /* Header-styling zoals bij de andere SMK tool */
-
     header.app-header {
       position: relative;
       z-index: 1;
@@ -284,6 +282,36 @@
       color: #e0f2fe;
     }
 
+    .copy-row {
+      margin-top: 6px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .copy-button {
+      font-size: 12px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(56,189,248,0.8);
+      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.25), #020617);
+      color: #e0f2fe;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.4);
+    }
+
+    .copy-button:hover {
+      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.38), #020617);
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.8);
+    }
+
+    .copy-button:active {
+      transform: translateY(1px);
+      box-shadow: 0 0 0 1px rgba(56,189,248,1);
+    }
+
     footer {
       position: relative;
       z-index: 1;
@@ -426,6 +454,12 @@
       <section class="card">
         <h2>Kopieerbare tekst</h2>
         <textarea id="kopieerTekst" readonly></textarea>
+        <div class="copy-row">
+          <button type="button" id="copyBtn" class="copy-button">
+            <span>📋</span>
+            <span id="copyBtnLabel">Tekst kopiëren</span>
+          </button>
+        </div>
         <div class="muted" style="margin-top: 8px;">
           De tekst hierboven kun je direct kopiëren naar je notitie of e-mail. Hierin staan automatisch: datum van overlijden,
           casenummer, restitutie (met eventueel bedrag), kaarttype, resterende dagen en of de overlijdensakte binnen is.
@@ -566,6 +600,36 @@
       document.getElementById("kopieerTekst").value = regels.join("\n");
     }
 
+    function setupCopyButton() {
+      const btn = document.getElementById("copyBtn");
+      const label = document.getElementById("copyBtnLabel");
+      const textarea = document.getElementById("kopieerTekst");
+      if (!btn || !label || !textarea) return;
+
+      btn.addEventListener("click", async () => {
+        const text = textarea.value;
+        if (!text.trim()) return;
+
+        const original = label.textContent;
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+          } else {
+            // Fallback
+            textarea.select();
+            document.execCommand("copy");
+          }
+          label.textContent = "Gekopieerd!";
+        } catch (e) {
+          label.textContent = "Mislukt, selecteer handmatig";
+        }
+
+        setTimeout(() => {
+          label.textContent = original;
+        }, 2000);
+      });
+    }
+
     // Events koppelen
     window.addEventListener("DOMContentLoaded", () => {
       const inputs = Array.from(document.querySelectorAll("input"));
@@ -573,6 +637,7 @@
         const evt = el.type === "checkbox" ? "change" : "input";
         el.addEventListener(evt, recalc);
       });
+      setupCopyButton();
       recalc();
     });
   </script>
