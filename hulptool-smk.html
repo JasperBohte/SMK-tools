@@ -262,7 +262,7 @@
         <div class="logo-circle">SMK</div>
         <div class="title-text">
           <h1>Hulptool SMK – Overlijdensberekening</h1>
-          <small>HTML-versie van tabblad “Berekening Dagen” – alles rekent automatisch mee.</small>
+          <small>Bereken eenvoudig het resterende restitutiebedrag en genereer een nette notitie.</small>
         </div>
       </div>
       <div class="header-pill">Servicetool · Intern gebruik</div>
@@ -285,7 +285,9 @@
           <div>
             <label for="casenummer">Casenummer</label>
             <input type="text" id="casenummer" inputmode="numeric" placeholder="bijv. 2352414" />
-            <div class="muted">Wordt automatisch naar 8 cijfers geformatteerd (00000000).</div>
+            <div class="muted">
+              Voor rapportage wordt het casenummer altijd als 8 cijfers weergegeven. Ontbrekende cijfers worden automatisch aangevuld.
+            </div>
           </div>
         </div>
 
@@ -303,9 +305,9 @@
               </label>
             </div>
             <div class="muted" style="margin-top: 4px;">
-              Logica zoals in Excel:<br />
-              • Volwassene: €75 (normaal) / €69 (verlengd)<br />
-              • Jongeren/kind: €39 (normaal) / €36 (verlengd)
+              Tarieven die bij deze keuzes horen:<br />
+              • Volwassene: €75, of €69 bij verlenging<br />
+              • Jongeren/kind: €39, of €36 bij verlenging
             </div>
           </div>
 
@@ -337,9 +339,9 @@
           <span class="output-value" id="totaalTerug">Missende data!</span>
         </div>
         <div class="muted" style="margin-top: 8px;">
-          Formule zoals in cel I2 en D7 van je sheet:<br />
-          I2: IF(A2="?", "NOG NIET BEKEND", MAX(0, E2 - A2))<br />
-          D7: IF(I2="NOG NIET BEKEND","Missende data!", MIN(IF(D4,69,75), MAX(0, IF(D5, IF(D4,36,39), IF(D4,69,75)) / 365 * I2)))
+          Uitleg berekening:<br />
+          • Aantal dagen: verschil tussen overlijdensdatum en vervaldatum (nooit negatief).<br />
+          • Terug te betalen bedrag: waarde van de resterende dagen, met een maximum van het oorspronkelijke kaartbedrag.
         </div>
       </section>
 
@@ -348,15 +350,14 @@
         <h2>Kopieerbare tekst</h2>
         <textarea id="kopieerTekst" readonly></textarea>
         <div class="muted" style="margin-top: 8px;">
-          Opbouw zoals in cel B16:<br />
-          "Kaarthouder overleden" + datum, casenummer, restitutie (met bedrag) en status overlijdensakte.
+          De tekst hierboven kun je direct kopiëren naar je notitie of e-mail. Hierin staan automatisch: datum van overlijden, casenummer, restitutie (met eventueel bedrag) en of de overlijdensakte binnen is.
         </div>
       </section>
     </main>
 
     <footer>
       <span>SMK – Overlijden & restitutie helper</span>
-      <span>Versie 1.0 · HTML-tool</span>
+      <span>Versie 1.3</span>
     </footer>
   </div>
 
@@ -394,7 +395,7 @@
       const restitutie = document.getElementById("restitutie").checked;
       const akte       = document.getElementById("akte").checked;
 
-      // I2: aantal dagen tot vervaldatum
+      // aantal dagen tot vervaldatum
       let dagenText = "NOG NIET BEKEND";
       let dagenValue = null;
 
@@ -411,7 +412,7 @@
 
       document.getElementById("aantalDagen").textContent = dagenText;
 
-      // D7: totaal terug te betalen
+      // totaal terug te betalen
       let totaalText = "Missende data!";
       let refundValue = null;
 
@@ -432,33 +433,9 @@
 
       document.getElementById("totaalTerug").textContent = totaalText;
 
-      // Tekstvoorstel B16
+      // Tekstvoorstel
       const formattedDate = formatDateDDMMYYYY(overlijdensDatumStr);
 
       let caseDigits = casenummerRaw.replace(/\D/g, "");
       if (caseDigits) {
-        caseDigits = caseDigits.padStart(8, "0").slice(-8);
-      }
-
-      let restitutieLine;
-      if (restitutie) {
-        const bedragTekst =
-          refundValue != null && !isNaN(refundValue)
-            ? ` (${formatEuro0(refundValue)})`
-            : "";
-        restitutieLine = `Restitutie: Ja${bedragTekst}`;
-      } else {
-        restitutieLine = "Restitutie: Nee";
-      }
-
-      const akteLine = `Overlijdensakte binnen: ${akte ? "Ja" : "Nee"}`;
-
-      const regels = [
-        "Kaarthouder overleden",
-        `Datum van overlijden: ${formattedDate || ""}`,
-        `Casenummer: ${caseDigits || ""}`,
-        restitutieLine,
-        akteLine
-      ];
-
-      document.getElementById("kopi
+        caseDigits = caseDigits.padStart(8, "0").slice(-
